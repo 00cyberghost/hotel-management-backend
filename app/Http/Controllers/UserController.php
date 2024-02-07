@@ -29,6 +29,8 @@ class UserController extends Controller
     {
         //
         return $this->UserRepository->staffList();
+        
+       
     }
 
     /**
@@ -45,11 +47,11 @@ class UserController extends Controller
     public function store(AddStaffRequest $request): jsonResponse
     {
         //
-        $user = $this->UserRepository->addStaff($request);
+        $res = $this->UserRepository->addStaff($request);
 
-        //event(new Registered($user));
+        //event(new Registered($res));
 
-        return response()->json(['status' => 'success'], 200);
+        if($res) return response()->json(200);
     }
 
     /**
@@ -63,27 +65,34 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): jsonResponse
     {
         //
-        return $this->UserRepository->editStaff($id);
+        $res = $this->UserRepository->editStaff($id);
+
+        if($res) return response()->json(200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStaffRequest $request, string $id)
+    public function update(UpdateStaffRequest $request, string $id): jsonResponse
     {
         //
-        return $this->UserRepository->updateStaff($request,$id);
+        $res = $this->UserRepository->updateStaff($request,$id);
+
+        if($res) return response()->json(200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): jsonResponse
     {
         //
+        $res = $this->UserRepository->deleteStaff($id);
+
+        if($res) return response()->json(200);
     }
 
     /**

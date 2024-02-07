@@ -27,6 +27,8 @@ class User extends Authenticatable
         'gender',
         'address',
         'password',
+        'created_by',
+        'modified_by',
         'image'
     ];
 

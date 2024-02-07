@@ -3,9 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Contracts\ImageRepositoryInterface;
 
 class ImageController extends Controller
 {
+
+    private ImageRepositoryInterface $ImageRepository;
+    
+
+    //invoke the __construct method whenever the class is instantiated
+    public function __construct(ImageRepositoryInterface $ImageRepository){
+
+        $this->ImageRepository = $ImageRepository;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -60,5 +72,26 @@ class ImageController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * handle image upload and return the new name of the image to the browser client
+     *
+     * @param  file
+     * @return json
+     */
+    public function uploadRoomImage(Request $request)
+    {
+
+        $file = $request->file('file');
+        
+        $imagename = time().$file->getClientOriginalName();
+        
+        $file->move('images',$imagename);
+
+        // public_path('photos/'.$previous_image)
+
+        return $imagename;
+        
     }
 }

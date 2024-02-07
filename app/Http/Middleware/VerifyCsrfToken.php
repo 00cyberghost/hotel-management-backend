@@ -13,6 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-        'http://localhost:8000/api/admin_add_user_image'
+        'http://localhost:8000/api/admin/add_user_image','http://localhost:8000/api/admin/add_room_image'
     ];
 }

@@ -17,4 +17,7 @@ interface UserRepositoryInterface {
 
     //update a user/staff
     public function updateStaff(Request $request, string $id);
+
+    //delete a user/staff
+    public function deleteStaff(string $id);
 }

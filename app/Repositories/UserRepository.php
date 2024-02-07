@@ -5,6 +5,7 @@ use App\Contracts\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserRepository implements UserRepositoryInterface
 {   
@@ -22,6 +23,7 @@ class UserRepository implements UserRepositoryInterface
             'address' => $request->address,
             'password' => Hash::make($request->password),
             'image' => $request->image,
+            'created_by' => Auth::user()->email,
         ]);
 
         return $user;
@@ -52,6 +54,14 @@ class UserRepository implements UserRepositoryInterface
             // 'password' => Hash::make($request->password),
             // 'image' => $request->image,
         ]);
+
+        return $user;
+    }
+
+    //delete a user/staff
+    public function deleteStaff(string $id){
+
+        $user = User::find($id)->delete();
 
         return $user;
     }

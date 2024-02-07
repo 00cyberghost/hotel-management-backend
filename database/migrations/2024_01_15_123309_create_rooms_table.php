@@ -17,14 +17,16 @@ return new class extends Migration
             $table->string('number');
             $table->string('type');
             $table->string('capacity');
-            $table->string('bed_type');
+            $table->string('bed');
             $table->string('bathroom');
             $table->string('kitchen');
             $table->text('description');
             $table->bigInteger('price');
+            $table->bigInteger('tax');
             $table->string('status');
-            $table->json('features');
+            $table->json('features')->nullable();
             $table->string('created_by');
+            $table->string('modified_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
