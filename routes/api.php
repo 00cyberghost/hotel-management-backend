@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +55,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'admin'],function ()
     
     /***** room  *****/
 
-    //add a staff
+    //add a room
     Route::post('/add_room', [RoomController::class, 'store'])->name('addRoom');
 
     //show list of all rooms
@@ -62,6 +63,65 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'admin'],function ()
 
     //show a room for editing
     Route::get('/room/edit/{id}', [RoomController::class, 'edit'])->name('editRoom');
+
+    //show a room 
+    Route::get('/room/view/{id}', [RoomController::class, 'show'])->name('showRoom');
+
+    //delete a room
+    Route::delete('/room/delete/{id}', [RoomController::class, 'destroy'])->name('deleteRoom');
+    
+    //update a room
+    Route::put('/room/update/{id}', [RoomController::class, 'update'])->name('updateRoom');
+    
+
+
+
+    /***** image  *****/
+    
+    //add an image
+    Route::post('/image/add', [ImageController::class, 'store'])->name('addImage');
+
+    //delete an image
+    Route::delete('/image/delete/{id}', [ImageController::class, 'destroy'])->name('deleteImage');
+
+
+    
+});
+
+
+//reception routes
+Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'reception'],function () {
+    
+    /***** room  *****/
+
+    //add a room
+    Route::post('/add_room', [RoomController::class, 'store'])->name('addRoom');
+
+    //show list of all rooms
+    Route::post('/check_availability', [RoomController::class, 'checkRoomAvailability'])->name('roomAvailaibility');
+
+    //show a room for editing
+    Route::get('/room/edit/{id}', [RoomController::class, 'edit'])->name('editRoom');
+
+    //show a room 
+    Route::get('/room/view/{id}', [RoomController::class, 'show'])->name('showRoom');
+
+    //delete a room
+    Route::delete('/room/delete/{id}', [RoomController::class, 'destroy'])->name('deleteRoom');
+    
+    //update a room
+    Route::put('/room/update/{id}', [RoomController::class, 'update'])->name('updateRoom');
+
+
+
+    /***** booking  *****/
+    
+    //add a booking
+    Route::post('/add_booking', [BookingController::class, 'receptionistAddBooking'])->name('addBooking');
+
+    //delete an image
+    Route::delete('/image/delete/{id}', [ImageController::class, 'destroy'])->name('deleteImage');
+
 
     
 });

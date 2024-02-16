@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('bed');
             $table->string('bathroom');
             $table->string('kitchen');
+            $table->string('size');
             $table->text('description');
             $table->bigInteger('price');
             $table->bigInteger('tax');

@@ -28,6 +28,12 @@ class ImageRepository implements ImageRepositoryInterface
         return Image::where('room_id',$id)->get();
     }
 
+    //get an image
+    public function getImage($id){
+
+        return Image::where('id',$id)->first();
+    }
+
     
 
     //delete an image

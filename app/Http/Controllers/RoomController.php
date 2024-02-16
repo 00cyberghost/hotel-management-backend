@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\RoomRequest;
+use App\Http\Requests\EditRoomRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\jsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +48,9 @@ class RoomController extends Controller
      */
     public function store(RoomRequest $request)
     {
-        //
+        //modify the request and add a created_by field
+        $request['created_by'] = Auth::user()->email;
+
         $res = $this->RoomRepository->addRoom($request);
 
         if($res){
@@ -71,6 +74,7 @@ class RoomController extends Controller
     public function show(string $id)
     {
         //
+        return $this->RoomRepository->showRoom($id);
     }
 
     /**
@@ -86,9 +90,13 @@ class RoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EditRoomRequest $request, string $id)
     {
         //
+        //modify the request and add a modified_by field
+        $request['modified_by'] = Auth::user()->email;
+
+        return $this->RoomRepository->updateRoom($request,$id);
     }
 
     /**
@@ -97,5 +105,11 @@ class RoomController extends Controller
     public function destroy(string $id)
     {
         //
+        return $this->RoomRepository->deleteRoom($id);
+    }
+
+    public function checkRoomAvailability(Request $request){
+
+        return $this->RoomRepository->checkRoomAvailability($request);
     }
 }

@@ -3,11 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Room;
 
-class RoomRequest extends FormRequest
+class EditRoomRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +22,7 @@ class RoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => ['required', 'min:1','max:40', 'unique:'.Room::class],
+            
             'type' => ['required', 'string','min:1','max:100'],
             'capacity' => ['required', 'numeric', 'max:1000000','min:1'],
             'bed' => ['required', 'max:50', 'min:1'],

@@ -5,7 +5,8 @@ use App\Contracts\RoomRepositoryInterface;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Booking;
+use Carbon\Carbon;
 
 class RoomRepository implements RoomRepositoryInterface
 {   
@@ -20,12 +21,13 @@ class RoomRepository implements RoomRepositoryInterface
             'bed' => $request->bed,
             'bathroom' => $request->bathroom,
             'kitchen' => $request->kitchen,
+            'size' => $request->size,
             'description' => $request->description,
             'price' => $request->price,
             'tax' => $request->price,
             'features' => json_encode($request->features),
             'status' => 'available',
-            'created_by' => Auth::user()->email,
+            'created_by' => $request->created_by,
         ]);
 
         return $room;
@@ -43,17 +45,28 @@ class RoomRepository implements RoomRepositoryInterface
         return Room::with('image')->where('id',$id)->first();
     }
 
-    //update a user/staff
-    public function updateStaff(Request $request, string $id){
+    //show a room 
+    public function showRoom(string $id){
 
-        $user = User::find($id)->update([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'role' => $request->role,
-            'job_description' => $request->job_description,
-            'gender' => $request->gender,
-            'address' => $request->address,
-            'modified_by' => Auth::user()->email,
+        return Room::with('image')->where('id',$id)->first();
+    }
+
+    //update a user/staff
+    public function updateRoom(Request $request, string $id){
+
+        $user = Room::find($id)->update([
+            // 'number' => $request->number,
+            'type' => $request->type,
+            'capacity' => $request->capacity,
+            'bed' => $request->bed,
+            'bathroom' => $request->bathroom,
+            'kitchen' => $request->kitchen,
+            'size' => $request->size,
+            'description' => $request->description,
+            'price' => $request->price,
+            'tax' => $request->tax,
+            'features' => json_encode($request->features),
+            'modified_by' => $request->modified_by,
             // 'password' => Hash::make($request->password),
             // 'image' => $request->image,
         ]);
@@ -61,11 +74,35 @@ class RoomRepository implements RoomRepositoryInterface
         return $user;
     }
 
-    //delete a user/staff
-    public function deleteStaff(string $id){
+    //delete a room
+    public function deleteRoom(string $id){
 
-        $user = User::find($id)->delete();
+        $image = Room::find($id)->delete();
 
-        return $user;
+        return $image;
+    }
+
+    //check room availability
+    public function checkRoomAvailability(Request $request){
+
+        // Define the start and end date range
+        $start_date = Carbon::parse($request->checkin);
+        $end_date = Carbon::parse($request->checkout);
+
+        // Retrieve rooms that are available within the date range
+        $available_rooms = Room::whereDoesntHave('bookings', function($query) use ($start_date, $end_date) {
+            $query->where(function($query) use ($start_date, $end_date) {
+                $query->where('checkin_date', '<', $end_date)
+                    ->where('checkout_date', '>', $start_date);
+            });
+        })->get();
+
+        return $available_rooms;
+    }
+
+    //get a room 
+    public function getRoom(string $id){
+
+        return Room::where('id',$id)->first();
     }
 }

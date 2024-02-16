@@ -25,6 +25,7 @@ class Room extends Model
         'bed',
         'bathroom',
         'kitchen',
+        'size',
         'description',
         'price',
         'tax',
@@ -42,8 +43,26 @@ class Room extends Model
      */
     public function image()
     {
-        return $this->hasOne(Image::class);
+        return $this->hasMany(Image::class);
     }
 
-   
+    /**
+     * Get all of the bookings for the Room
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    // /**
+    //  * Get the user that owns the Room
+    //  *
+    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    //  */
+    // public function user(): BelongsTo
+    // {
+    //     return $this->belongsTo(User::class, 'foreign_key', 'other_key');
+    // }
 }

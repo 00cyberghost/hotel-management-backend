@@ -12,6 +12,9 @@ interface ImageRepositoryInterface {
     //get all images
     public function getImages($id);
 
+    //get an image
+    public function getImage($id);
+
     //delete an image
     public function deleteImage(string $id);
 

@@ -20,13 +20,15 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->date('checkin_date');
             $table->date('checkout_date');
+            $table->integer('no_of_persons');
             $table->string('status');
             $table->string('payment');
             $table->bigInteger('price');
-            $table->string('notes');
+            $table->text('notes')->nullable();
             $table->string('booking_no');
             $table->string('booking_type');
             $table->string('booked_by');
+            $table->string('modified_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

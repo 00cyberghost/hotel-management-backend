@@ -15,9 +15,18 @@ interface RoomRepositoryInterface {
     //show a room for editing
     public function editRoom(string $id);
 
-    // //update a user/staff
-    // public function updateStaff(Request $request, string $id);
+    //show a room 
+    public function showRoom(string $id);
 
-    // //delete a user/staff
-    // public function deleteStaff(string $id);
+    //update a room
+    public function updateRoom(Request $request, string $id);
+
+    //delete a room
+    public function deleteRoom(string $id);
+
+    //check room availability
+    public function checkRoomAvailability(Request $request);
+
+    //get a room
+    public function getRoom(String $id);
 }

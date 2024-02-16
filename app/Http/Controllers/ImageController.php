@@ -40,6 +40,7 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         //
+        return $this->ImageRepository->addImage($request->room_id,$request->image_name,$request->path);
     }
 
     /**
@@ -71,7 +72,14 @@ class ImageController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $image = $this->ImageRepository->getImage($id);
+
+        $imagename = $image->image_name;
+
+        if(\File::exists(public_path('images/'.$imagename))) \File::delete(public_path('images/'.$imagename));
+
+        return $this->ImageRepository->deleteImage($id);
+
     }
 
     /**

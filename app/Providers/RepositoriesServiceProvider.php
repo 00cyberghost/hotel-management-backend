@@ -10,6 +10,8 @@ use App\Repositories\RoomRepository;
 use App\Contracts\RoomRepositoryInterface;
 use App\Repositories\ImageRepository;
 use App\Contracts\ImageRepositoryInterface;
+use App\Repositories\BookingRepository;
+use App\Contracts\BookingRepositoryInterface;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,11 @@ class RepositoriesServiceProvider extends ServiceProvider
 
         //ImageRepository
         $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
+
+        //BookingRepository
+        $this->app->bind(BookingRepositoryInterface::class, BookingRepository::class);
+
+        
     }
 
     /**
