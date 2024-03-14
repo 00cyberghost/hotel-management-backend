@@ -11,6 +11,7 @@ use Illuminate\Http\jsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Contracts\BookingRepositoryInterface;
 use App\Repositories\RoomRepository;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -30,26 +31,13 @@ class BookingController extends Controller
     public function receptionistAddBooking(ReceptionistBookingRequest $request)
     {
 
-        return json_decode($request->room_id);
+        //$room_id = json_decode($request->room_id);
 
-        //instantiate the room repository class
-        $room_instance = new RoomRepository();
+        $room_id_array = $request->room_id;
 
-        $room = $room_instance->getRoom($request->room_id);
-
-        $price = $room->price;
-
-        $tax = $room->tax;
-
-        $payment = $price + $tax;
-        
-        $request['status'] = 'paid';
+        $request->status == 'yes' ? $request['status'] = 'Checked In' :  $request['status'] = 'Pending';
 
         $request['notes'] = null;
-
-        $request['price'] = $price;
-
-        $request['payment'] = $payment;
 
         $request['booking_no'] = rand(1000000,9000000);
 
@@ -57,9 +45,56 @@ class BookingController extends Controller
 
         $request['booked_by'] = Auth::user()->email;
 
-        return $this->store($request);
+       
+
+        //instantiate the room repository class
+        $room_instance = new RoomRepository();
+
+        foreach ($request->room_id as $id) {
+            
+            $room = $room_instance->getRoom(intval($id));
+
+            $price = $room->price;
+
+            $tax = $room->tax;
+
+            $payment = $price + $tax;
+
+            $request['price'] = $price;
+
+            $request['payment'] = $payment;
+
+            $request['paid'] = 'Yes';
+
+            $request['room_id'] = intval($id);
+
+            $request['no_of_persons'] = ceil(intval($request->no_of_persons) / count($room_id_array));
+            
+            //check if the room is available
+            //if a result is returned that means that the booking already exists in the booking table
+            $is_available = $this->getBookingByCheckinCheckoutRoomId($request->checkin_date,$request->checkout_date,$id);
+
+            count($is_available) < 1 ? $this->store($request) : abort(400,"Room number ".$room->number." Is Already Booked");
+ 
+        }
+
+        return response()->json('success', 200);
+
+        
         
     }
+
+    /**
+     * get a booking by checkin date, checkout date and room_id
+     */
+    public function getBookingByCheckinCheckoutRoomId($checkin,$checkout,$room_id){
+
+        $checkin = Carbon::parse($checkin);
+        $checkout = Carbon::parse($checkout);
+
+        return $this->BookingRepository->getBookingByCheckinCheckoutRoomId($checkin,$checkout,$room_id);
+    }
+
 
 
     /**

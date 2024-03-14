@@ -23,9 +23,9 @@ class BookingRequest extends FormRequest
     {
         return [
             'room_id' => ['required'],
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
-            'phone' => ['required', 'string', 'max:25'],
+            'name' => ['required', 'string', 'min:2', 'max:40'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:190'],
+            'phone' => ['required', 'string', 'min:2' , 'max:15'],
             'checkin_date' => ['required', 'string', 'max:20', 'min:5'],
             'checkout_date' => ['required', 'string', 'max:20','min:5'],
             'payment' => ['required', 'numeric','min:1'],

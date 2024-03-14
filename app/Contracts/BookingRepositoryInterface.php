@@ -9,6 +9,9 @@ interface BookingRepositoryInterface {
     //add a booking
     public function addBooking(Request $request);
 
+    //get a booking by checkin date, checkout date and room_id
+    public function getBookingByCheckinCheckoutRoomId($checkin,$checkout,$room_id);
+
     // //get all bookings
     // public function bookinglist();
 

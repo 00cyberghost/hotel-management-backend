@@ -50,6 +50,9 @@ class RoomController extends Controller
     {
         //modify the request and add a created_by field
         $request['created_by'] = Auth::user()->email;
+        
+        //convert the features to json
+        $request['features'] = json_encode($request->features);
 
         $res = $this->RoomRepository->addRoom($request);
 
@@ -96,6 +99,9 @@ class RoomController extends Controller
         //modify the request and add a modified_by field
         $request['modified_by'] = Auth::user()->email;
 
+        //convert the features to json
+        $request['features'] = json_encode($request->features);
+
         return $this->RoomRepository->updateRoom($request,$id);
     }
 
@@ -107,9 +113,22 @@ class RoomController extends Controller
         //
         return $this->RoomRepository->deleteRoom($id);
     }
-
+    
+    //return only rooms that are available on the specified date range
     public function checkRoomAvailability(Request $request){
 
         return $this->RoomRepository->checkRoomAvailability($request);
+    }
+
+    //return only unpaid rooms
+    public function unpaidRooms(Request $request){
+
+        return $this->RoomRepository->unpaidRooms($request);
+    }
+
+    //return only paid/reserved rooms
+    public function paidRooms(Request $request){
+
+        return $this->RoomRepository->paidRooms($request);
     }
 }

@@ -24,6 +24,7 @@ class BookingRepository implements BookingRepositoryInterface
             'checkout_date' => $request->checkout_date,
             'no_of_persons' => $request->no_of_persons,
             'status' => $request->status,
+            'paid' => $request->paid,
             'payment' => $request->payment,
             'price' => $request->price,
             'notes' => $request->notes,
@@ -33,6 +34,12 @@ class BookingRepository implements BookingRepositoryInterface
         ]);
 
         return $booking;
+    }
+
+    //get a booking by checkin date, checkout date and room_id
+    public function getBookingByCheckinCheckoutRoomId($checkin,$checkout,$room_id){
+
+        return Booking::where('checkin_date',$checkin)->where('checkout_date',$checkout)->where('room_id',$room_id)->get();
     }
 
     // //get all rooms

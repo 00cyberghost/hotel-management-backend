@@ -24,8 +24,8 @@ class RoomRepository implements RoomRepositoryInterface
             'size' => $request->size,
             'description' => $request->description,
             'price' => $request->price,
-            'tax' => $request->price,
-            'features' => json_encode($request->features),
+            'tax' => $request->tax,
+            'features' => $request->features,
             'status' => 'available',
             'created_by' => $request->created_by,
         ]);
@@ -65,10 +65,9 @@ class RoomRepository implements RoomRepositoryInterface
             'description' => $request->description,
             'price' => $request->price,
             'tax' => $request->tax,
-            'features' => json_encode($request->features),
+            'features' => $request->features,
             'modified_by' => $request->modified_by,
-            // 'password' => Hash::make($request->password),
-            // 'image' => $request->image,
+        
         ]);
 
         return $user;
@@ -98,6 +97,42 @@ class RoomRepository implements RoomRepositoryInterface
         })->get();
 
         return $available_rooms;
+    }
+
+    //rooms that have not been paid for
+    public function unpaidRooms(Request $request){
+
+        // Define the start and end date range
+        $start_date = Carbon::parse($request->checkin);
+        $end_date = Carbon::parse($request->checkout);
+
+        // Retrieve booked rooms that are not paid for within the date range
+        return Room::whereHas('bookings', function($query) use ($start_date, $end_date) {
+            $query->where(function($query) use ($start_date, $end_date) {
+                $query->where('checkin_date', '<', $end_date)
+                    ->where('checkout_date', '>', $start_date)
+                    ->where('paid','No');
+            });
+        })->get();
+
+    }
+
+    //rooms that have been paid for
+    public function paidRooms(Request $request){
+
+        // Define the start and end date range
+        $start_date = Carbon::parse($request->checkin);
+        $end_date = Carbon::parse($request->checkout);
+
+        // Retrieve booked rooms that are paid for within the date range
+       return Room::whereHas('bookings', function($query) use ($start_date, $end_date) {
+            $query->where(function($query) use ($start_date, $end_date) {
+                $query->where('checkin_date', '<', $end_date)
+                    ->where('checkout_date', '>', $start_date)
+                    ->where('paid','Yes');
+            });
+        })->get();
+
     }
 
     //get a room 

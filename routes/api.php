@@ -94,23 +94,16 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'reception'],functio
     
     /***** room  *****/
 
-    //add a room
-    Route::post('/add_room', [RoomController::class, 'store'])->name('addRoom');
-
-    //show list of all rooms
+    //show list of all available rooms within a specific date range
     Route::post('/check_availability', [RoomController::class, 'checkRoomAvailability'])->name('roomAvailaibility');
 
-    //show a room for editing
-    Route::get('/room/edit/{id}', [RoomController::class, 'edit'])->name('editRoom');
+    //show list of all rooms that are not paid for
+    Route::post('/unpaid_rooms', [RoomController::class, 'unpaidRooms'])->name('unpaidRooms');
 
-    //show a room 
-    Route::get('/room/view/{id}', [RoomController::class, 'show'])->name('showRoom');
+    //show list of all rooms that are paid for/reserved
+    Route::post('/paid_rooms', [RoomController::class, 'paidRooms'])->name('paidRooms');
 
-    //delete a room
-    Route::delete('/room/delete/{id}', [RoomController::class, 'destroy'])->name('deleteRoom');
     
-    //update a room
-    Route::put('/room/update/{id}', [RoomController::class, 'update'])->name('updateRoom');
 
 
 

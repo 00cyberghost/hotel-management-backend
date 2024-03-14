@@ -24,6 +24,7 @@ class Booking extends Model
         'checkout_date',
         'no_of_persons',
         'status',
+        'paid',
         'payment',
         'price',
         'notes',
@@ -34,12 +35,12 @@ class Booking extends Model
     ];
 
     /**
-     * Get the room that owns the Booking
+     * Get the booking that belongs to a room
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function room()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Room::class);
     }
 }

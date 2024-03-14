@@ -29,4 +29,10 @@ interface RoomRepositoryInterface {
 
     //get a room
     public function getRoom(String $id);
+
+    //get unpaid rooms
+    public function unpaidRooms(Request $request);
+
+    //get paid/reserved rooms
+    public function paidRooms(Request $request);
 }
